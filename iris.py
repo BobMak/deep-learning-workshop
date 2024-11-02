@@ -23,8 +23,8 @@ model = th.nn.Sequential(
 
 # training
 n_epochs = 1000
-learning_rate = 0.001
-batch_size = 32
+learning_rate = 0.01
+batch_size = 8
 optimizer = th.optim.SGD(model.parameters(), lr=learning_rate)
 loss_fn = th.nn.CrossEntropyLoss()
 
@@ -33,10 +33,9 @@ for i in range(n_epochs):
         x = iris_training_x[j:j+batch_size]
         y = iris_training_y[j:j+batch_size]
         y_ = model(x)
-        loss = loss_fn(y_, th.argmax(y, dim=1))
+        loss = loss_fn(y_, y)
         optimizer.zero_grad()
-        y_ = model(iris_training_x)
-        loss = loss_fn(y_, iris_training_y)
+
         loss.backward()
         optimizer.step()
     print(f"Epoch {i}: {loss.item()}")
